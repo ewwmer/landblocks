@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LandBlock</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ================= WORLD CANVAS ================= -->
+    <canvas id="game-canvas"></canvas>
+
+    <!-- ================= HUD (overlays the world, never blocks play) ================= -->
+    <div id="hud">
+
+        <!-- Top Left: Logo -->
+        <div class="hud-logo" id="hudLogo">LandBlock</div>
+
+        <!-- Top Right: Compact counters -->
+        <div class="hud-stats">
+            <div class="hud-stat" title="Potatoes"><span>🥔</span><b id="hudPotatoes">0</b></div>
+            <div class="hud-stat" title="Gears"><span>⚙️</span><b id="hudGears">0</b></div>
+            <div class="hud-stat" id="hudPetBox" title="Active Pet"><span id="hudPetIcon">🐾</span><b id="hudPetName">--</b></div>
+        </div>
+
+        <!-- Bottom Center: Hotbar -->
+        <div id="hotbar" class="hotbar"></div>
+
+        <!-- Bottom Right: buttons -->
+        <div id="actionBtns" class="action-btns">
+            <button class="hud-btn" id="btnInventory" title="Inventory (I)">🎒</button>
+            <button class="hud-btn" id="btnPets" title="Pets">🐾</button>
+            <button class="hud-btn" id="btnUpgrades" title="Upgrades">🚀</button>
+            <button class="hud-btn" id="btnSave" title="Save (F5)">💾</button>
+        </div>
+
+        <!-- Center small toast -->
+        <div id="toast"></div>
+
+        <!-- Interaction prompt -->
+        <div id="interactPrompt" class="interact-prompt hidden"></div>
+    </div>
+
+    <!-- ================= MODAL MENUS ================= -->
+    <div class="overlay hidden" id="overlay-inventory">
+        <div class="modal-window">
+            <div class="modal-titlebar"><span>🎒 Inventory</span><button class="modal-x" data-close="overlay-inventory">✕</button></div>
+            <div id="invBody" class="modal-body"></div>
+        </div>
+    </div>
+
+    <div class="overlay hidden" id="overlay-pets">
+        <div class="modal-window">
+            <div class="modal-titlebar"><span>🐾 Pets</span><button class="modal-x" data-close="overlay-pets">✕</button></div>
+            <div id="petBody" class="modal-body"></div>
+        </div>
+    </div>
+
+    <div class="overlay hidden" id="overlay-upgrades">
+        <div class="modal-window">
+            <div class="modal-titlebar"><span>🚀 Upgrades</span><button class="modal-x" data-close="overlay-upgrades">✕</button></div>
+            <div id="upgradeBody" class="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Gear Exchange machine popup (small, opens on interaction) -->
+    <div class="overlay hidden" id="overlay-exchange">
+        <div class="modal-window small">
+            <div class="modal-titlebar"><span>⚙️ Gear Exchange</span><button class="modal-x" data-close="overlay-exchange">✕</button></div>
+            <div class="modal-body">
+                <div class="ex-rate"><span>🥔</span> <b id="exRateP">100</b> Potatoes &rarr; <span>⚙️</span> <b>1</b> Gear</div>
+                <div class="ex-amt">
+                    <button id="exDec" class="mini-btn">−</button>
+                    <input id="exAmount" type="number" min="1" step="1" value="1">
+                    <button id="exInc" class="mini-btn">+</button>
+                </div>
+                <button id="exConfirm" class="btn-main">Exchange Potatoes</button>
+                <div id="exFeedback" class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monster feeding popup -->
+    <div class="overlay hidden" id="overlay-monster">
+        <div class="modal-window small">
+            <div class="modal-titlebar"><span id="monTitle">🍖 Feed Blorp</span><button class="modal-x" data-close="overlay-monster">✕</button></div>
+            <div class="modal-body">
+                <div class="ex-rate">Level <b id="monLevel">1</b> · Hunger <b id="monHunger">100</b></div>
+                <div class="mon-hunger-bar"><div id="monHungerFill" style="width:100%"></div></div>
+                <div class="feed-btns">
+                    <button id="feedGearBtn" class="btn-main">⚙️ 1 Feed</button>
+                    <button id="feedFoodBtn" class="btn-main" style="background:linear-gradient(180deg,#e67e22,#b8560f)">🍖 1 Food</button>
+                </div>
+                <div id="monFeedback" class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reward popup -->
+    <div class="overlay hidden" id="overlay-reward">
+        <div class="modal-window tiny reward">
+            <div class="reward-title" id="rewardTitle">Reward!</div>
+            <div class="reward-icon" id="rewardIcon">🎁</div>
+            <div id="rewardText" class="reward-text"></div>
+            <button id="rewardOk" class="btn-main">Nice!</button>
+        </div>
+    </div>
+
+    <!-- Welcome / name setup on first launch -->
+    <div class="overlay" id="overlay-welcome">
+        <div class="modal-window welcome">
+            <div class="modal-titlebar"><span>🏠 Welcome to LandBlock</span></div>
+            <div class="modal-body">
+                <p>You have received a personal land: <b>My Land</b></p>
+                <label>Player Name</label>
+                <input id="nameInput" type="text" maxlength="16" value="Farmer">
+                <button id="nameConfirm" class="btn-main">Start Farming</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset confirm -->
+    <div class="overlay hidden" id="overlay-reset">
+        <div class="modal-window tiny">
+            <div class="modal-titlebar"><span>⚠️ Reset Game</span></div>
+            <div class="modal-body">
+                <p>Delete all progress permanently?</p>
+                <div class="reset-btns">
+                    <button id="confirmReset" class="btn-main red">Yes, Reset</button>
+                    <button class="btn-main ghost" data-close="overlay-reset">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
