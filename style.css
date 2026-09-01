@@ -1,0 +1,740 @@
+/* =========================================================================
+   LandBlock - Style Sheet
+   Original block-based farming game. CSS-only asset styling.
+   ========================================================================= */
+
+/* ---------- Reset / Base ---------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --grass-dark: #4c9a2a;
+    --grass: #5cb835;
+    --grass-light: #71cf49;
+    --soil: #8a5a2b;
+    --soil-dark: #6f4520;
+    --soil-light: #a06c38;
+    --wood: #7c5233;
+    --wood-dark: #5c3b23;
+    --gold: #f6b93b;
+    --gold-light: #ffe28a;
+    --gear-metal: #9aa5b1;
+    --gem-green: #2ecc71;
+    --gem-blue: #3498db;
+    --gem-purple: #9b59b6;
+    --gem-red: #e74c3c;
+    --panel-bg: #2b2f33;
+    --panel-light: #3a4046;
+    --text: #f0f0f0;
+    --text-dim: #b9c0c8;
+    --danger: #e74c3c;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Segoe UI', 'Trebuchet MS', Tahoma, sans-serif;
+    color: var(--text);
+    overflow-x: hidden;
+}
+
+body {
+    background: linear-gradient(180deg, #87ceeb 0%, #a8e4f5 45%, #9bd86d 46%, #6fce4f 100%);
+    min-height: 100vh;
+    padding-bottom: 120px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* =========================================================================
+   TOP BAR
+   ========================================================================= */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: linear-gradient(180deg, #2b2f33, #23272b);
+    border-bottom: 4px solid var(--grass-dark);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.game-logo {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: var(--gold);
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+    background: linear-gradient(135deg, var(--soil-dark), var(--soil));
+    padding: 4px 12px;
+    border-radius: 8px;
+    border: 2px solid var(--gold);
+}
+
+.topbar-left, .topbar-right {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--panel-bg);
+    border: 2px solid var(--panel-light);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    min-width: 70px;
+    justify-content: center;
+}
+
+.stat-icon {
+    font-size: 18px;
+}
+
+.pet-stat {
+    border-color: var(--gem-purple);
+    box-shadow: 0 0 8px rgba(155,89,182,0.5);
+}
+
+/* =========================================================================
+   MAIN SCREEN / LAND
+   ========================================================================= */
+.main-screen {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 20px 16px;
+}
+
+.land-banner {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.land-banner h1 {
+    display: inline-block;
+    font-size: 26px;
+    background: linear-gradient(180deg, #f5d77a, #e0a63b);
+    color: #5c3308;
+    padding: 8px 24px;
+    border-radius: 12px 12px 0 0;
+    border: 3px solid #b07d2a;
+    border-bottom: none;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.4);
+}
+
+/* ---------- Areas ---------- */
+.area-title {
+    font-size: 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #f8ffe6;
+    background: rgba(0,0,0,0.35);
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 0;
+}
+
+.farm-area {
+    background: linear-gradient(180deg, var(--grass), var(--grass-dark));
+    border: 4px solid #3c7d21;
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 22px;
+    box-shadow: inset 0 4px 10px rgba(255,255,255,0.3), 0 6px 14px rgba(0,0,0,0.25);
+}
+
+.farm-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 8px;
+    margin-top: 10px;
+}
+
+/* ---- Individual farm tiles ---- */
+.tile {
+    aspect-ratio: 1 / 1;
+    border-radius: 10px;
+    border: 3px solid var(--soil-dark);
+    background:
+        radial-gradient(circle at 30% 30%, var(--soil-light), transparent 60%),
+        linear-gradient(180deg, var(--soil), var(--soil-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+    box-shadow: inset 0 -4px 8px rgba(0,0,0,0.25), 0 3px 6px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.tile:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.35), 0 0 0 3px var(--gold-light);
+}
+
+.tile:active {
+    transform: scale(0.95);
+}
+
+.tile.locked {
+    background:
+        repeating-linear-gradient(45deg, #555, #555 8px, #4a4a4a 8px, #4a4a4a 16px);
+    border-color: #444;
+    cursor: not-allowed;
+    filter: grayscale(0.5);
+}
+
+/* Growth visual overlays */
+.tile .growth-ring {
+    position: absolute;
+    inset: 4px;
+    border: 3px solid rgba(255,255,255,0.6);
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.tile.harvest-ready {
+    animation: readyPulse 1.2s infinite;
+    border-color: var(--gold);
+}
+
+@keyframes readyPulse {
+    0%, 100% { box-shadow: 0 0 0 2px var(--gold), inset 0 -4px 8px rgba(0,0,0,0.25); }
+    50% { box-shadow: 0 0 0 6px var(--gold-light), inset 0 -4px 8px rgba(0,0,0,0.25); }
+}
+
+/* Harvest burst effect */
+.burst {
+    animation: burstAnim 0.5s ease-out;
+}
+
+@keyframes burstAnim {
+    0% { transform: scale(0.6); opacity: 1; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* =========================================================================
+   MONSTER AREA
+   ========================================================================= */
+.monster-area {
+    background: linear-gradient(180deg, var(--grass), var(--grass-dark));
+    border: 4px solid #3c7d21;
+    border-radius: 16px;
+    padding: 14px;
+}
+
+.monster-card {
+    background: linear-gradient(180deg, #3a4046, #2b2f33);
+    border: 3px solid var(--gem-purple);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.monster-card:hover {
+    transform: translateY(-4px);
+}
+
+.monster-graphic {
+    font-size: 70px;
+    line-height: 1;
+    animation: monsterIdle 3s ease-in-out infinite;
+    filter: drop-shadow(0 6px 8px rgba(0,0,0,0.4));
+}
+
+@keyframes monsterIdle {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+.monster-info {
+    text-align: center;
+}
+
+.monster-name {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--gold);
+}
+
+.monster-level {
+    color: var(--text-dim);
+    margin-bottom: 8px;
+}
+
+.progress-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 6px;
+}
+
+.progress-bar {
+    width: 220px;
+    height: 16px;
+    background: #14171a;
+    border-radius: 10px;
+    border: 2px solid #0d0f11;
+    overflow: hidden;
+    margin: 4px auto;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 8px;
+    transition: width 0.4s ease;
+}
+
+.hunger-fill {
+    background: linear-gradient(180deg, var(--gem-red), #a5271a);
+}
+
+.growth-fill {
+    background: linear-gradient(180deg, var(--gem-green), #1d8f4d);
+}
+
+/* Feed animation */
+.monster-card.feeding .monster-graphic {
+    animation: feedHop 0.7s ease;
+}
+
+@keyframes feedHop {
+    0%, 100% { transform: scale(1); }
+    30% { transform: scale(1.4) rotate(-10deg); }
+    60% { transform: scale(1.2) rotate(10deg); }
+}
+
+/* =========================================================================
+   BUTTONS
+   ========================================================================= */
+.btn {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 15px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.12s ease;
+    color: #fff;
+}
+
+.btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+.btn:active { transform: scale(0.95); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-primary {
+    background: linear-gradient(180deg, #5cb835, #3c9a1f);
+    border-bottom: 4px solid #2a7115;
+}
+
+.btn-exchange {
+    background: linear-gradient(180deg, var(--gold-light), var(--gold));
+    color: #5c3308;
+    border-bottom: 4px solid #b07d2a;
+    font-size: 16px;
+}
+
+.btn-feed {
+    background: linear-gradient(180deg, var(--gem-purple), #7d3c9e);
+    border-bottom: 4px solid #5b2a72;
+}
+
+.btn-small {
+    padding: 6px 14px;
+    font-size: 18px;
+    background: var(--panel-light);
+}
+
+.btn-danger {
+    background: linear-gradient(180deg, var(--danger), #a8271b);
+    border-bottom: 4px solid #7c1a12;
+}
+
+.btn-ghost {
+    background: var(--panel-light);
+    border-bottom: 4px solid #23272b;
+}
+
+.btn-save {
+    background: linear-gradient(180deg, var(--gem-blue), #1f6faf);
+    border-bottom: 4px solid #15517f;
+}
+
+.btn-reset {
+    background: linear-gradient(180deg, #e67e22, #b8560f);
+    border-bottom: 4px solid #8a3e0a;
+}
+
+/* =========================================================================
+   MODALS & OVERLAYS
+   ========================================================================= */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: fadeIn 0.2s ease;
+    padding: 16px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal {
+    background: linear-gradient(180deg, #3a4046, #2b2f33);
+    border: 3px solid var(--gold);
+    border-radius: 16px;
+    padding: 28px;
+    max-width: 460px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    position: relative;
+    animation: popIn 0.25s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal h2 {
+    text-align: center;
+    margin-bottom: 4px;
+    color: var(--gold);
+}
+
+.modal-sub {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 1;
+}
+.modal-close:hover { color: var(--gold); }
+
+/* ---------- Exchange ---------- */
+.exchange-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 14px 0;
+}
+
+.stat-box {
+    background: var(--panel-bg);
+    border: 2px solid var(--panel-light);
+    border-radius: 12px;
+    padding: 12px 16px;
+    text-align: center;
+    min-width: 90px;
+}
+
+.stat-arrow {
+    font-size: 28px;
+    color: var(--gold);
+}
+
+.exchange-rate {
+    text-align: center;
+    background: rgba(255,255,255,0.06);
+    padding: 8px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    color: var(--text-dim);
+}
+
+.amount-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 16px 0;
+}
+
+.amount-input input {
+    width: 80px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 800;
+    background: var(--panel-bg);
+    color: var(--text);
+    border: 2px solid var(--panel-light);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.feedback {
+    text-align: center;
+    margin-top: 12px;
+    min-height: 20px;
+    font-weight: 700;
+    color: var(--gold-light);
+}
+
+.feedback.error { color: var(--danger); }
+.feedback.success { color: var(--gem-green); }
+
+/* =========================================================================
+   INVENTORY
+   ========================================================================= */
+.inventory-list, .pet-list, .upgrade-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.inv-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--panel-bg);
+    border: 2px solid var(--panel-light);
+    border-radius: 10px;
+    padding: 10px 14px;
+}
+
+.inv-item .item-icon {
+    font-size: 28px;
+    width: 40px;
+    text-align: center;
+}
+
+.inv-item .item-name { font-weight: 800; }
+.inv-item .item-desc { font-size: 12px; color: var(--text-dim); }
+.inv-item .item-count { margin-left: auto; font-weight: 900; font-size: 18px; }
+
+.empty-msg {
+    text-align: center;
+    color: var(--text-dim);
+    padding: 24px;
+    font-size: 15px;
+}
+
+/* Rarity styles */
+.rarity { display: inline-block; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 20px; margin-left: 6px; vertical-align: middle; }
+.rarity-common { background: #b9c0c8; color: #333; }
+.rarity-uncommon { background: #2ecc71; color: #0b3d1f; }
+.rarity-rare { background: #e67e22; color: #3d1d05; }
+.rarity-epic { background: #9b59b6; color: #2b0f38; }
+.rarity-legendary { background: #f6b93b; color: #5c3308; }
+
+/* =========================================================================
+   PETS
+   ========================================================================= */
+.pet-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--panel-bg);
+    border: 2px solid var(--panel-light);
+    border-radius: 10px;
+    padding: 10px 14px;
+}
+
+.pet-card.active-pet {
+    border-color: var(--gold);
+    box-shadow: 0 0 10px rgba(246,185,59,0.4);
+}
+
+.pet-card .pet-icon { font-size: 34px; width: 50px; text-align: center; }
+.pet-card .pet-name { font-weight: 800; }
+.pet-card .pet-meta { font-size: 12px; color: var(--text-dim); }
+.pet-card .pet-bonus { font-size: 12px; color: var(--gem-green); margin-top: 2px; }
+
+.btn-activate {
+    margin-left: auto;
+    padding: 6px 12px;
+    font-size: 12px;
+    background: linear-gradient(180deg, var(--gold-light), var(--gold));
+    color: #5c3308;
+    border-bottom: 3px solid #b07d2a;
+}
+
+/* =========================================================================
+   UPGRADES
+   ========================================================================= */
+.upgrade-card {
+    background: var(--panel-bg);
+    border: 2px solid var(--panel-light);
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+
+.upgrade-card .up-name { font-weight: 800; font-size: 16px; }
+.upgrade-card .up-desc { font-size: 13px; color: var(--text-dim); margin: 4px 0; }
+.upgrade-card .up-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+.upgrade-card .up-level { font-weight: 800; color: var(--gold-light); }
+.upgrade-card .up-price { font-size: 13px; color: var(--text-dim); }
+
+.upgrade-card.maxed .up-name { color: var(--gem-green); }
+
+/* =========================================================================
+   REWARD POPUP
+   ========================================================================= */
+.reward-modal { text-align: center; }
+.reward-graphic {
+    font-size: 80px;
+    margin: 10px 0;
+    animation: rewardBounce 0.8s ease infinite;
+}
+
+@keyframes rewardBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-12px) scale(1.1); }
+}
+
+.reward-text {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    color: var(--text);
+}
+
+.reward-text .big {
+    font-size: 26px;
+    color: var(--gold);
+    display: block;
+    margin-top: 4px;
+}
+
+/* Confetti pieces */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    z-index: 101;
+    pointer-events: none;
+    animation: confettiFall 1.4s ease-out forwards;
+}
+
+@keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0); opacity: 1; }
+    100% { transform: translateY(120vh) rotate(720deg); opacity: 0; }
+}
+
+/* =========================================================================
+   BOTTOM NAV
+   ========================================================================= */
+.bottombar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, #2b2f33, #1e2225);
+    border-top: 4px solid var(--grass-dark);
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+    z-index: 50;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.3);
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 10px;
+    transition: color 0.15s ease, transform 0.15s ease, background 0.15s ease;
+}
+
+.nav-btn span { font-size: 24px; }
+
+.nav-btn:hover {
+    color: var(--gold);
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-3px);
+}
+
+.nav-btn:active { transform: scale(0.9); }
+
+/* =========================================================================
+   SAVE BAR
+   ========================================================================= */
+.save-bar {
+    position: fixed;
+    bottom: 74px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+    z-index: 45;
+}
+
+.save-bar .btn {
+    padding: 8px 14px;
+    font-size: 13px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* =========================================================================
+   RESPONSIVE
+   ========================================================================= */
+@media (max-width: 560px) {
+    .game-logo { font-size: 17px; }
+    .stat { min-width: 55px; padding: 4px 8px; font-size: 13px; }
+    .farm-grid { grid-template-columns: repeat(auto-fill, minmax(58px, 1fr)); }
+    .tile { font-size: 26px; }
+    .land-banner h1 { font-size: 19px; }
+    .monster-graphic { font-size: 52px; }
+    .progress-bar { width: 160px; }
+    .modal { padding: 20px; }
+    .nav-btn span { font-size: 20px; }
+    .save-bar { bottom: 80px; right: 8px; flex-direction: column; }
+}

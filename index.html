@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LandBlock - Block Farming Adventure</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ======================= TOP BAR ======================= -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <div class="game-logo">LandBlock</div>
+            <div class="stat player-stat">
+                <span class="stat-icon">🧑‍🌾</span>
+                <span id="playerNameStat">Farmer</span>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <div class="stat" title="Potatoes">
+                <span class="stat-icon potato-icon">🥔</span>
+                <span id="topPotatoes">0</span>
+            </div>
+            <div class="stat" title="Gears">
+                <span class="stat-icon gear-icon">⚙️</span>
+                <span id="topGears">0</span>
+            </div>
+            <div class="stat pet-stat" title="Active Pet" id="topPetBox">
+                <span class="stat-icon pet-icon">🐾</span>
+                <span id="topPetName">None</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ======================= MAIN LAND VIEW ======================= -->
+    <main id="mainScreen" class="main-screen">
+        <!-- Land Title Banner -->
+        <div class="land-banner">
+            <h1 id="landName">🌾 ~ My Little Farm ~</h1>
+        </div>
+
+        <!-- Farm Grid -->
+        <section class="farm-area">
+            <h2 class="area-title">🥔 Potato Patch</h2>
+            <div id="farmGrid" class="farm-grid"></div>
+        </section>
+
+        <!-- Monster Area -->
+        <section class="monster-area" id="monsterArea">
+            <div class="monster-card" id="monsterCard">
+                <div class="monster-graphic" id="monsterGraphic">👾</div>
+                <div class="monster-info">
+                    <div class="monster-name" id="monsterName">Baby Blorp</div>
+                    <div class="monster-level">Level <span id="monsterLevel">1</span></div>
+                    <div class="progress-label">Hunger</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill hunger-fill" id="hungerFill" style="width:100%"></div>
+                    </div>
+                    <div class="progress-label">Growth</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill growth-fill" id="monsterGrowthFill" style="width:0%"></div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="feedMonsterBtn">🍖 Feed Monster</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- ======================= MODAL WINDOWS ======================= -->
+
+    <!-- Gear Exchange Modal -->
+    <div class="overlay hidden" id="exchangeOverlay">
+        <div class="modal exchange-modal">
+            <button class="modal-close" data-close="exchangeOverlay">×</button>
+            <h2>⚙️ Gear Exchange</h2>
+            <p class="modal-sub">Trade potatoes for powerful gears!</p>
+            <div class="exchange-stats">
+                <div class="stat-box">🥔 Potatoes<br><strong id="exPotatoes">0</strong></div>
+                <div class="stat-arrow">⟶</div>
+                <div class="stat-box">⚙️ Gears<br><strong id="exGears">0</strong></div>
+            </div>
+            <div class="exchange-rate">
+                Rate: <strong><span id="exRate">100</span></strong> potatoes = 1 gear
+            </div>
+            <div class="amount-input">
+                <button class="btn btn-small" id="exDec">−</button>
+                <input type="number" id="exAmount" value="1" min="1" step="1">
+                <button class="btn btn-small" id="exInc">+</button>
+            </div>
+            <button class="btn btn-exchange" id="exConfirm">Exchange Potatoes</button>
+            <div class="feedback" id="exFeedback"></div>
+        </div>
+    </div>
+
+    <!-- Inventory Modal -->
+    <div class="overlay hidden" id="inventoryOverlay">
+        <div class="modal inventory-modal">
+            <button class="modal-close" data-close="inventoryOverlay">×</button>
+            <h2>🎒 Inventory</h2>
+            <div id="inventoryList" class="inventory-list"></div>
+        </div>
+    </div>
+
+    <!-- Pets Modal -->
+    <div class="overlay hidden" id="petsOverlay">
+        <div class="modal pets-modal">
+            <button class="modal-close" data-close="petsOverlay">×</button>
+            <h2>🐾 Pet Collection</h2>
+            <div id="petList" class="pet-list"></div>
+        </div>
+    </div>
+
+    <!-- Upgrades Modal -->
+    <div class="overlay hidden" id="upgradesOverlay">
+        <div class="modal upgrades-modal">
+            <button class="modal-close" data-close="upgradesOverlay">×</button>
+            <h2>🚀 Farm Upgrades</h2>
+            <div id="upgradeList" class="upgrade-list"></div>
+        </div>
+    </div>
+
+    <!-- Monster Feeding Modal -->
+    <div class="overlay hidden" id="feedOverlay">
+        <div class="modal feed-modal">
+            <button class="modal-close" data-close="feedOverlay">×</button>
+            <h2 id="feedMonsterTitle">🍖 Feed Blorp</h2>
+            <p class="modal-sub">Each gear fills hunger and grants a random reward!</p>
+            <div class="feed-options">
+                <button class="btn btn-feed" id="feedGearBtn">⚙️ 1 Gear = 1 Feed</button>
+                <button class="btn btn-feed" id="feedItemBtn">🍖 1 Monster Food = 1 Feed</button>
+            </div>
+            <div class="feedback" id="feedFeedback"></div>
+        </div>
+    </div>
+
+    <!-- Reward Popup (global, used by monster rewards) -->
+    <div class="overlay hidden" id="rewardOverlay">
+        <div class="modal reward-modal">
+            <h2 id="rewardTitle">Reward!</h2>
+            <div class="reward-graphic" id="rewardGraphic">🎁</div>
+            <div class="reward-text" id="rewardText"></div>
+            <button class="btn btn-primary" id="rewardOk">Nice!</button>
+        </div>
+    </div>
+
+    <!-- Reset Confirmation Modal -->
+    <div class="overlay hidden" id="resetOverlay">
+        <div class="modal reset-modal">
+            <h2>⚠️ Reset Game?</h2>
+            <p class="modal-sub">This will permanently delete all of your progress!</p>
+            <div class="reset-buttons">
+                <button class="btn btn-danger" id="confirmReset">Yes, Reset</button>
+                <button class="btn btn-ghost" data-close="resetOverlay">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================= BOTTOM NAVIGATION ======================= -->
+    <nav class="bottombar">
+        <button class="nav-btn" data-modal="inventoryOverlay"><span>🎒</span>Inventory</button>
+        <button class="nav-btn" data-modal="petsOverlay"><span>🐾</span>Pets</button>
+        <button class="nav-btn" data-modal="upgradesOverlay"><span>🚀</span>Upgrades</button>
+        <button class="nav-btn" data-modal="exchangeOverlay"><span>⚙️</span>Exchange</button>
+        <button class="nav-btn" data-modal="feedOverlay"><span>🍖</span>Monster</button>
+    </nav>
+
+    <div class="save-bar">
+        <button class="btn btn-save" id="saveBtn">💾 Save Game</button>
+        <button class="btn btn-reset" id="resetBtn">🗑️ Reset Game</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
